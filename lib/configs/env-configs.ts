@@ -2,8 +2,8 @@ import { DeployEnvEnum } from "./types";
 
 export const DEPLOYMENT_ENV_CONFIG = {
     frontend: {
-        owner: "nd-chung",
-        repo: "learn-aws-cicd-frontend-vue",
+        owner: "ducchung2444",
+        repo: "aws-cicd-spa-cdk",
         [DeployEnvEnum.PROD]: {
             branch: "master",
             recordName: "fecicd",
