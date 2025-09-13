@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22.17.1
+    commands:
+      - echo "Installing Bun..."
+      - curl -fsSL https://bun.com/install | bash -s "bun-v1.2.19"
+      - export PATH="$HOME/.bun/bin:$PATH"
+      - echo "Installing dependencies..."
+      - bun install --frozen-lockfile
+
+  build:
+    commands:
+      - echo "Building..."
+      - bun run build
+
+  post_build:
+    commands:
+      - echo "Syncing dist/ to S3..."
+      - aws s3 sync dist/ "s3://$BUCKET_NAME/" --delete
+      - echo "Creating CloudFront invalidation..."
+      - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
